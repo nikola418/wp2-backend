@@ -3,13 +3,13 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const app = express();
-const port = process.env.PORT;
+const APP = express();
+const PORT = process.env.PORT;
 
-app.get("/", (req, res) => {
+APP.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+APP.listen(PORT, () => {
+  console.log(`Backend app open on port ${PORT}`);
 });
