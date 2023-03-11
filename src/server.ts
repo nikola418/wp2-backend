@@ -1,15 +1,87 @@
 import express from "express";
-import dotenv from "dotenv";
+import http from "http";
+import mongoose from "mongoose";
+import { config } from "./config/config";
+import Logging from "./library/Logging";
+import authorRoutes from "./routes/Author";
+import bookRoutes from "./routes/Book";
 
-dotenv.config();
+const router = express();
 
-const APP = express();
-const PORT = process.env.PORT;
+/**  Connect to Mongo */
+mongoose
+  .connect(config.mongo.url, {
+    retryWrites: true,
+    w: "majority",
+  })
+  .then(() => {
+    Logging.info(`Connected to Cluster0`);
+    StartSeerver();
+  })
+  .catch((err) => {
+    Logging.error("Unable to connect:");
+    Logging.error(err);
+  });
 
-APP.get("/", (req, res) => {
-  res.send("Hello World!");
-});
+/** Only start the server if Mongo Connects */
+const StartSeerver = () => {
+  router.use((req, res, next) => {
+    /** Log the req */
+    Logging.info(
+      `Incomming - METHOD: [${req.method}] - URL: [${req.url}] - IP: [${req.socket.remoteAddress}]`
+    );
 
-APP.listen(PORT, () => {
-  console.log(`Backend app open on port ${PORT}`);
-});
+    res.on("finish", () => {
+      /** Log the res */
+      Logging.info(
+        `Result - METHOD: [${req.method}] - URL: [${req.url}] - IP: [${req.socket.remoteAddress}] - STATUS: [${res.statusCode}]`
+      );
+    });
+
+    next();
+  });
+
+  router.use(express.urlencoded({ extended: true }));
+  router.use(express.json());
+
+  /** Rules of the API */
+  router.use((req, res, next) => {
+    res.header("Acces-Control-Allow-Origin", "*");
+    res.header(
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+    );
+
+    if (req.method == "OPTION") {
+      res.header(
+        "Access-Control-Allow-Methods",
+        "PUT, POST, PATCH, DELETE, GET"
+      );
+    }
+
+    next();
+  });
+
+  /** Routes */
+  router.use("/authors", authorRoutes);
+  router.use("/books", bookRoutes);
+
+  /** HealthCheck */
+  router.get("/ping", (req, res, next) =>
+    res.status(200).json({ message: "pong" })
+  );
+
+  /** Error handling */
+  router.use((req, res, next) => {
+    const error = new Error("Not Found");
+    Logging.error(error);
+
+    return res.status(404).json({ message: error.message });
+  });
+
+  http
+    .createServer(router)
+    .listen(config.server.port, () =>
+      Logging.info(`Server is running on port ${config.server.port}`)
+    );
+};
