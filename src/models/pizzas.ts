@@ -1,7 +1,6 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema, Document } from 'mongoose';
 import { ExtrasSchema, IExtraModel } from './extras';
 import { PizzaDimension } from './enums/';
-const { Schema } = mongoose;
 
 export interface IPizza {
   title: string;

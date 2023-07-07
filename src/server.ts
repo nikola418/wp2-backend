@@ -3,10 +3,13 @@ import http from 'http';
 import mongoose from 'mongoose';
 import { config } from './config/config';
 import Logging from './library/logging';
-import authorRoutes from './routes/authors';
-import bookRoutes from './routes/books';
+import usersRouter from './routes/users';
+import booksRouter from './routes/books';
+import authorsRouter from './routes/authors';
+
 import swaggerUI from 'swagger-ui-express';
 import swaggerFile from './docs/swagger-docs.json';
+import { HttpStatus } from './library/enums';
 
 const router = express();
 /**  Connect to Mongo */
@@ -64,21 +67,22 @@ const StartSeerver = () => {
   });
 
   /** Routes */
-  router.use('/authors', authorRoutes);
-  router.use('/books/', bookRoutes);
+  router.use('/authors', authorsRouter);
+  router.use('/books/', booksRouter);
+  router.use('/users/', usersRouter);
   router.use('/api', swaggerUI.serve, swaggerUI.setup(swaggerFile, {}));
 
   /** HealthCheck */
-  router.get('/ping', (req, res, next) =>
-    res.status(200).json({ message: 'pong' }),
-  );
+  router.get('/ping', (req, res) => res.status(200).json({ message: 'pong' }));
 
   /** Error handling */
-  router.use((req, res, next) => {
+  router.use((req, res) => {
     const error = new Error('Not Found');
     Logging.error(error);
 
-    return res.status(404).json({ message: error.message });
+    return res
+      .status(HttpStatus.NOT_FOUND)
+      .json({ message: error.message, status: HttpStatus.NOT_FOUND });
   });
 
   http

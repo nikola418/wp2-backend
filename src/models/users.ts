@@ -3,7 +3,7 @@ import { PaymentMethod } from './enums';
 
 export interface IUser {
   email: string;
-  passwordHash: string;
+  password: string;
   name?: string;
   surname?: string;
   phoneNumber?: string;
@@ -21,7 +21,7 @@ const UsersSchema: Schema = new Schema<IUser>(
       maxLength: 512,
       unique: true,
     },
-    passwordHash: {
+    password: {
       type: String,
       required: true,
       maxLength: 512,

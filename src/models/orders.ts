@@ -1,14 +1,12 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema, Document } from 'mongoose';
 import { IPizzaModel, modelName as pizzasModelName } from './pizzas';
 import { IExtraModel, modelName as extrasModelName } from './extras';
 import { IUserModel } from './users';
 import { PaymentMethod, Status } from './enums';
 
-const { Schema } = mongoose;
-
 export interface IOrder {
   customer: IUserModel;
-  addres: object;
+  address: string;
   total: number;
   status: keyof typeof Status;
   paymentMethod: keyof typeof PaymentMethod;
@@ -17,6 +15,9 @@ export interface IOrder {
     extras: IExtraModel[];
   }[];
 }
+
+export interface IOrderModel extends IOrder, Document {}
+
 const OrderSchema = new Schema(
   {
     customer: {
@@ -47,11 +48,11 @@ const OrderSchema = new Schema(
       {
         type: {
           pizza: {
-            type: mongoose.Types.ObjectId,
+            type: Schema.Types.ObjectId,
             ref: pizzasModelName,
             required: true,
           },
-          extras: [{ type: mongoose.Types.ObjectId, ref: extrasModelName }],
+          extras: [{ type: Schema.Types.ObjectId, ref: extrasModelName }],
         },
         validate: [validateEntries, 'Must order at least 1 pizza!'],
       },

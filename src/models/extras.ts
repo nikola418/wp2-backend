@@ -1,6 +1,4 @@
-import mongoose from 'mongoose';
-
-const { Schema } = mongoose;
+import mongoose, { Schema, Document } from 'mongoose';
 
 export interface IExtra {
   text: string;

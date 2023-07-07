@@ -60,16 +60,16 @@
  */
 import express from 'express';
 import controller from '../controllers/books';
-import { Schemas, ValidateSchema } from '../middleware/validate-schema';
+import { Schemas, validateSchema } from '../middleware/validate-schema';
 
 const router = express.Router();
 
-router.post('/', ValidateSchema(Schemas.book.create), controller.createBook);
+router.post('/', validateSchema(Schemas.book.create), controller.createBook);
 router.get('/:bookId', controller.readBook);
 router.get('/', controller.readAll);
 router.patch(
   '/:bookId',
-  ValidateSchema(Schemas.book.update),
+  validateSchema(Schemas.book.update),
   controller.updateBook,
 );
 router.delete('/:bookId', controller.deleteBook);

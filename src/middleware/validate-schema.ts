@@ -3,17 +3,20 @@ import { NextFunction, Request, Response } from 'express';
 import Logging from '../library/logging';
 import { IAuthor } from '../models/author';
 import { IBook } from '../models/book';
+import { IUser } from '../models/users';
+import { HttpStatus } from '../library/enums';
 
-export const ValidateSchema = (schema: ObjectSchema) => {
-  return async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      await schema.validateAsync(req.body);
-
-      next();
-    } catch (err) {
-      Logging.error(err);
-      return res.status(422).json({ err });
+export const validateSchema = (schema: ObjectSchema) => {
+  return (req: Request, res: Response, next: NextFunction) => {
+    const result = schema.validate(req.body);
+    if (result.error) {
+      Logging.error(result.error);
+      return res
+        .status(HttpStatus.UNPROCESSABLE_ENTITY)
+        .json({ message: result.error.message });
     }
+
+    next();
   };
 };
 
@@ -39,5 +42,21 @@ export const Schemas = {
         .required(),
       title: Joi.string().required(),
     }),
+  },
+  user: {
+    create: Joi.object<IUser>({
+      email: Joi.string()
+        .regex(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/)
+        .required(),
+      password: Joi.string()
+        .required()
+        .regex(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/),
+      address: Joi.string().optional(),
+      name: Joi.string().optional(),
+      surname: Joi.string().optional(),
+      phoneNumber: Joi.string().optional(),
+      paymentMethod: Joi.string().optional(),
+    }),
+    update: Joi.object<IUser>({}),
   },
 };
