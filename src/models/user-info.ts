@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
 
@@ -10,8 +10,8 @@ const UserInfoSchema = new mongoose.Schema(
     address: {},
     paymentMethod: {},
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export default mongoose.models.UserInfo ||
-  mongoose.model("UserInfo", UserInfoSchema);
+  mongoose.model('UserInfo', UserInfoSchema);

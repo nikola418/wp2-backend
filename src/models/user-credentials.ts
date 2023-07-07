@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
 
@@ -19,10 +19,10 @@ const UserCredentialsSchema = new mongoose.Schema(
       required: true,
       maxlength: 512,
     },
-    userInfo: { type: Schema.Types.ObjectId, ref: "UserCredentials" },
+    userInfo: { type: Schema.Types.ObjectId, ref: 'UserCredentials' },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export default mongoose.models.Order ||
-  mongoose.model("Order", UserCredentialsSchema);
+  mongoose.model('Order', UserCredentialsSchema);

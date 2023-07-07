@@ -1,25 +1,26 @@
-import express from "express";
-import http from "http";
-import mongoose from "mongoose";
-import { config } from "./config/config";
-import Logging from "./library/Logging";
-import authorRoutes from "./routes/Author";
-import bookRoutes from "./routes/Book";
+import express from 'express';
+import http from 'http';
+import mongoose from 'mongoose';
+import { config } from './config/config';
+import Logging from './library/logging';
+import authorRoutes from './routes/authors';
+import bookRoutes from './routes/books';
+import swaggerUI from 'swagger-ui-express';
+import swaggerFile from './docs/swagger-docs.json';
 
 const router = express();
-
 /**  Connect to Mongo */
 mongoose
   .connect(config.mongo.url, {
     retryWrites: true,
-    w: "majority",
+    w: 'majority',
   })
   .then(() => {
     Logging.info(`Connected to Cluster0`);
     StartSeerver();
   })
   .catch((err) => {
-    Logging.error("Unable to connect:");
+    Logging.error('Unable to connect:');
     Logging.error(err);
   });
 
@@ -28,13 +29,13 @@ const StartSeerver = () => {
   router.use((req, res, next) => {
     /** Log the req */
     Logging.info(
-      `Incomming - METHOD: [${req.method}] - URL: [${req.url}] - IP: [${req.socket.remoteAddress}]`
+      `Incomming - METHOD: [${req.method}] - URL: [${req.url}] - IP: [${req.socket.remoteAddress}]`,
     );
 
-    res.on("finish", () => {
+    res.on('finish', () => {
       /** Log the res */
       Logging.info(
-        `Result - METHOD: [${req.method}] - URL: [${req.url}] - IP: [${req.socket.remoteAddress}] - STATUS: [${res.statusCode}]`
+        `Result - METHOD: [${req.method}] - URL: [${req.url}] - IP: [${req.socket.remoteAddress}] - STATUS: [${res.statusCode}]`,
       );
     });
 
@@ -46,16 +47,16 @@ const StartSeerver = () => {
 
   /** Rules of the API */
   router.use((req, res, next) => {
-    res.header("Acces-Control-Allow-Origin", "*");
+    res.header('Acces-Control-Allow-Origin', '*');
     res.header(
-      "Access-Control-Allow-Headers",
-      "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+      'Access-Control-Allow-Headers',
+      'Origin, X-Requested-With, Content-Type, Accept, Authorization',
     );
 
-    if (req.method == "OPTION") {
+    if (req.method == 'OPTION') {
       res.header(
-        "Access-Control-Allow-Methods",
-        "PUT, POST, PATCH, DELETE, GET"
+        'Access-Control-Allow-Methods',
+        'PUT, POST, PATCH, DELETE, GET',
       );
     }
 
@@ -63,17 +64,18 @@ const StartSeerver = () => {
   });
 
   /** Routes */
-  router.use("/authors", authorRoutes);
-  router.use("/books", bookRoutes);
+  router.use('/authors', authorRoutes);
+  router.use('/books/', bookRoutes);
+  router.use('/api', swaggerUI.serve, swaggerUI.setup(swaggerFile, {}));
 
   /** HealthCheck */
-  router.get("/ping", (req, res, next) =>
-    res.status(200).json({ message: "pong" })
+  router.get('/ping', (req, res, next) =>
+    res.status(200).json({ message: 'pong' }),
   );
 
   /** Error handling */
   router.use((req, res, next) => {
-    const error = new Error("Not Found");
+    const error = new Error('Not Found');
     Logging.error(error);
 
     return res.status(404).json({ message: error.message });
@@ -82,6 +84,6 @@ const StartSeerver = () => {
   http
     .createServer(router)
     .listen(config.server.port, () =>
-      Logging.info(`Server is running on port ${config.server.port}`)
+      Logging.info(`Server is running on port ${config.server.port}`),
     );
 };
