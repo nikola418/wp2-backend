@@ -1,12 +1,31 @@
-import Pizza from '../models/pizzas';
+import Pizza, { IPizza } from '../models/pizzas';
 
-const create = (dto) => {};
+const create = (dto: IPizza) => {
+  // #swagger.tags = ['Pizzas']
+  const { desc, extraOptions, sizes, title, img } = dto;
+  const pizza = new Pizza({ desc, extraOptions, sizes, title, img });
+  return pizza.save();
+};
 
 const readAll = () => {
-  Pizza.find({});
+  // #swagger.tags = ['Pizzas']
+  return Pizza.find({});
 };
-const readById = () => {};
+const readById = () => {
+  return;
+};
 
-const updateById = () => {};
+const updateById = () => {
+  return;
+};
 
-const deleteById = () => {};
+const deleteById = () => {
+  return;
+};
+
+const pizzasService = {
+  create,
+  readAll,
+};
+
+export default pizzasService;

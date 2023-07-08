@@ -5,6 +5,8 @@ import { IAuthor } from '../models/author';
 import { IBook } from '../models/book';
 import { IUser } from '../models/users';
 import { HttpStatus } from '../library/enums';
+import { IPizza } from '../models/pizzas';
+import { PizzaDimension } from '../models/enums';
 
 export const validateSchema = (schema: ObjectSchema) => {
   return (req: Request, res: Response, next: NextFunction) => {
@@ -58,5 +60,26 @@ export const Schemas = {
       paymentMethod: Joi.string().optional(),
     }),
     update: Joi.object<IUser>({}),
+  },
+  pizza: {
+    create: Joi.object<IPizza>({
+      desc: Joi.string().optional(),
+      extraOptions: Joi.array().items({
+        text: Joi.string().required(),
+        price: Joi.number().required(),
+      }),
+      img: Joi.string().uri().optional(),
+      sizes: Joi.array()
+        .items({
+          dimension: Joi.string()
+            .required()
+            .valid(...Object.keys(PizzaDimension)),
+          price: Joi.number().required().min(0),
+        })
+        .min(1)
+        .required(),
+      title: Joi.string().required(),
+    }),
+    update: Joi.object<IPizza>({}),
   },
 };

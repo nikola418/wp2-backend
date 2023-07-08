@@ -16,6 +16,7 @@ const create = (req: Request, res: Response) => {
       console.log(Object.keys(error));
       if (error.code === 11000)
         return res.status(HttpStatus.BAD_REQUEST).json({ error });
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ error });
     });
 };
 
@@ -74,10 +75,12 @@ const readAll = (req: Request, res: Response) => {
 //     .catch((error) => res.status(500).json({ error }));
 // };
 
-export default {
+const usersController = {
   create,
   //   readById,
   readAll,
   //   updateById,
   //   deleteById,
 };
+
+export default usersController;

@@ -2,6 +2,7 @@ import User, { IUser } from '../models/users';
 import { hashPassword } from '../library/hash';
 
 const create = (dto: IUser) => {
+  // #swagger.tags = ['Users']
   const {
     email,
     password,
@@ -26,25 +27,31 @@ const create = (dto: IUser) => {
 };
 
 const readAll = async () => {
+  // #swagger.tags = ['Users']
   return await User.find({});
 };
 
 const readById = async (_id: string) => {
+  // #swagger.tags = ['Users']
   return await User.findById(_id);
 };
 
 const updateById = () => {
+  // #swagger.tags = ['Users']
   return;
 };
 
 const deleteById = () => {
+  // #swagger.tags = ['Users']
   return;
 };
 
-export default {
+const usersService = {
   create,
   readAll,
   readById,
   updateById,
   deleteById,
 };
+
+export default usersService;

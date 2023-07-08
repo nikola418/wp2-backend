@@ -6,6 +6,7 @@ import Logging from './library/logging';
 import usersRouter from './routes/users';
 import booksRouter from './routes/books';
 import authorsRouter from './routes/authors';
+import pizzasRouter from './routes/pizzas';
 
 import swaggerUI from 'swagger-ui-express';
 import swaggerFile from './docs/swagger-docs.json';
@@ -20,7 +21,7 @@ mongoose
   })
   .then(() => {
     Logging.info(`Connected to Cluster0`);
-    StartSeerver();
+    StartServer();
   })
   .catch((err) => {
     Logging.error('Unable to connect:');
@@ -28,11 +29,11 @@ mongoose
   });
 
 /** Only start the server if Mongo Connects */
-const StartSeerver = () => {
+const StartServer = () => {
   router.use((req, res, next) => {
     /** Log the req */
     Logging.info(
-      `Incomming - METHOD: [${req.method}] - URL: [${req.url}] - IP: [${req.socket.remoteAddress}]`,
+      `Incoming - METHOD: [${req.method}] - URL: [${req.url}] - IP: [${req.socket.remoteAddress}]`,
     );
 
     res.on('finish', () => {
@@ -50,7 +51,7 @@ const StartSeerver = () => {
 
   /** Rules of the API */
   router.use((req, res, next) => {
-    res.header('Acces-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Origin', '*');
     res.header(
       'Access-Control-Allow-Headers',
       'Origin, X-Requested-With, Content-Type, Accept, Authorization',
@@ -68,8 +69,9 @@ const StartSeerver = () => {
 
   /** Routes */
   router.use('/authors', authorsRouter);
-  router.use('/books/', booksRouter);
-  router.use('/users/', usersRouter);
+  router.use('/books', booksRouter);
+  router.use('/users', usersRouter);
+  router.use('/pizzas', pizzasRouter);
   router.use('/api', swaggerUI.serve, swaggerUI.setup(swaggerFile, {}));
 
   /** HealthCheck */
