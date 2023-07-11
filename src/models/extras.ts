@@ -11,6 +11,7 @@ export const ExtrasSchema = new Schema(
   {
     text: {
       type: String,
+      unique: true,
       required: true,
       maxLength: 60,
     },

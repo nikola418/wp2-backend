@@ -10,4 +10,6 @@ extrasRouter.post(
   extrasController.create,
 );
 
+extrasRouter.delete('/:id', extrasController.deleteById);
+
 export default extrasRouter;

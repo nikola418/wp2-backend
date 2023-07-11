@@ -4,10 +4,7 @@ import { IPizza } from '../../models/pizzas';
 
 const pizzaSchema = Joi.object<IPizza>({
   desc: Joi.string(),
-  extraOptions: Joi.array().items({
-    text: Joi.string().required(),
-    price: Joi.number().required(),
-  }),
+  extraOptions: Joi.array().items(Joi.string()),
   img: Joi.string().uri(),
   sizes: Joi.array()
     .items({

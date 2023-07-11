@@ -15,6 +15,19 @@ const create = (req: Request, res: Response) => {
     );
 };
 
-const extrasController = { create };
+const deleteById = (req: Request, res: Response) => {
+  const id = req.params.id;
+
+  extrasService
+    .deleteById(id)
+    .then((extra) => res.status(HttpStatus.OK).json(extra))
+    .catch((err) =>
+      res
+        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .json({ message: err.message }),
+    );
+};
+
+const extrasController = { create, deleteById };
 
 export default extrasController;

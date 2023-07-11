@@ -5,5 +5,9 @@ const create = (dto: IExtra) => {
   return extra.save();
 };
 
-const extrasService = { create };
+const deleteById = (_id: string) => {
+  return Extra.findByIdAndDelete(_id);
+};
+
+const extrasService = { create, deleteById };
 export default extrasService;

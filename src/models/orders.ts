@@ -50,6 +50,7 @@ const OrderSchema = new Schema(
           pizza: {
             type: Schema.Types.ObjectId,
             ref: pizzasModelName,
+            autopopulate: true,
             required: true,
           },
           extras: [{ type: Schema.Types.ObjectId, ref: extrasModelName }],
