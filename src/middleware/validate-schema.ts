@@ -3,10 +3,9 @@ import { NextFunction, Request, Response } from 'express';
 import Logging from '../library/logging';
 import { IAuthor } from '../models/author';
 import { IBook } from '../models/book';
-import { IUser } from '../models/users';
 import { HttpStatus } from '../library/enums';
-import { IPizza } from '../models/pizzas';
-import { PizzaDimension } from '../models/enums';
+import { createUserSchema, updateUserSchema } from './schemas/user';
+import { createPizzaSchema, updatePizzaSchema } from './schemas/pizza';
 
 export const validateSchema = (schema: ObjectSchema) => {
   return (req: Request, res: Response, next: NextFunction) => {
@@ -46,40 +45,11 @@ export const Schemas = {
     }),
   },
   user: {
-    create: Joi.object<IUser>({
-      email: Joi.string()
-        .regex(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/)
-        .required(),
-      password: Joi.string()
-        .required()
-        .regex(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/),
-      address: Joi.string().optional(),
-      name: Joi.string().optional(),
-      surname: Joi.string().optional(),
-      phoneNumber: Joi.string().optional(),
-      paymentMethod: Joi.string().optional(),
-    }),
-    update: Joi.object<IUser>({}),
+    create: createUserSchema,
+    update: updateUserSchema,
   },
   pizza: {
-    create: Joi.object<IPizza>({
-      desc: Joi.string().optional(),
-      extraOptions: Joi.array().items({
-        text: Joi.string().required(),
-        price: Joi.number().required(),
-      }),
-      img: Joi.string().uri().optional(),
-      sizes: Joi.array()
-        .items({
-          dimension: Joi.string()
-            .required()
-            .valid(...Object.keys(PizzaDimension)),
-          price: Joi.number().required().min(0),
-        })
-        .min(1)
-        .required(),
-      title: Joi.string().required(),
-    }),
-    update: Joi.object<IPizza>({}),
+    create: createPizzaSchema,
+    update: updatePizzaSchema,
   },
 };

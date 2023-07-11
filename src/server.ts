@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Express } from 'express';
 import http from 'http';
 import mongoose from 'mongoose';
 import { config } from './config/config';
@@ -7,12 +7,11 @@ import usersRouter from './routes/users';
 import booksRouter from './routes/books';
 import authorsRouter from './routes/authors';
 import pizzasRouter from './routes/pizzas';
-
 import swaggerUI from 'swagger-ui-express';
 import swaggerFile from './docs/swagger-docs.json';
 import { HttpStatus } from './library/enums';
 
-const router = express();
+const router: Express = express();
 /**  Connect to Mongo */
 mongoose
   .connect(config.mongo.url, {

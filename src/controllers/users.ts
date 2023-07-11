@@ -1,16 +1,32 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import usersService from '../services/users';
-import { IUser } from '../models/users';
 import { HttpStatus } from '../library/enums';
 import Logging from '../library/logging';
+import { IUser, IUserModel } from '../models/users';
 
-const create = (req: Request, res: Response) => {
+const create = (req: Request, res: Response, next: NextFunction) => {
   // #swagger.tags = ['Users']
-  const dto: IUser = req.body;
+  const {
+    email,
+    password,
+    address,
+    name,
+    paymentMethod,
+    phoneNumber,
+    surname,
+  } = req.body;
 
   usersService
-    .create(dto)
-    .then((user) => res.status(HttpStatus.CREATED).json({ user }))
+    .create({
+      email,
+      password,
+      address,
+      name,
+      paymentMethod,
+      phoneNumber,
+      surname,
+    })
+    .then((user) => res.status(HttpStatus.CREATED).json(user))
     .catch((error) => {
       Logging.error(error);
       console.log(Object.keys(error));
@@ -25,62 +41,82 @@ const readAll = (req: Request, res: Response) => {
 
   usersService
     .readAll()
-    .then((users) => res.status(HttpStatus.OK).json({ users }))
-    .catch((error) =>
-      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ error }),
+    .then((users) => res.status(HttpStatus.OK).json(users))
+    .catch((err) =>
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+        message: err.message,
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+      }),
     );
 };
-// const readAuthor = (req: Request, res: Response, next: NextFunction) => {
-//   // #swagger.tags = ['Authors']
-//   const authorId = req.params.authorId;
 
-//   return Author.findById(authorId)
-//     .then((author) =>
-//       author
-//         ? res.status(200).json({ author })
-//         : res.status(404).json({ message: 'Not Found' }),
-//     )
-//     .catch((error) => res.status(500).json({ error }));
-// };
+const readById = (req: Request, res: Response) => {
+  // #swagger.tags = ['Users']
+  const id = req.params.id;
 
-// const updateAuthor = (req: Request, res: Response, next: NextFunction) => {
-//   // #swagger.tags = ['Authors']
-//   const authorId = req.params.authorId;
+  usersService
+    .readById(id)
+    .then((user) => res.status(HttpStatus.OK).json(user))
+    .catch((err) =>
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+        message: err.message,
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+      }),
+    );
+};
 
-//   return Author.findById(authorId)
-//     .then((author) => {
-//       if (author) {
-//         author.set(req.body);
-//         return author
-//           .save()
-//           .then((author) => res.status(201).json({ author }))
-//           .catch((error) => res.status(500).json({ message: 'Not Found' }));
-//       } else {
-//         res.status(404).json({ message: 'Not Found' });
-//       }
-//     })
-//     .catch((error) => res.status(500).json({ error }));
-// };
+const updateById = (req: Request, res: Response) => {
+  // #swagger.tags = ['Users']
+  const id = req.params.id;
+  const {
+    email,
+    password,
+    address,
+    name,
+    paymentMethod,
+    phoneNumber,
+    surname,
+  } = req.body;
 
-// const deleteAuthor = (req: Request, res: Response, next: NextFunction) => {
-//   // #swagger.tags = ['Authors']
-//   const authorId = req.params.authorId;
+  usersService
+    .updateById(id, {
+      email,
+      password,
+      address,
+      name,
+      paymentMethod,
+      phoneNumber,
+      surname,
+    })
+    .then((user) => res.status(HttpStatus.ACCEPTED).json(user))
+    .catch((err) =>
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+        message: err.message,
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+      }),
+    );
+};
 
-//   return Author.findByIdAndDelete(authorId)
-//     .then((author) =>
-//       author
-//         ? res.status(201).json({ message: 'deleted' })
-//         : res.status(404).json({ message: 'Not Found' }),
-//     )
-//     .catch((error) => res.status(500).json({ error }));
-// };
+const deleteById = (req: Request, res: Response) => {
+  // #swagger.tags = ['Users']
+  const id = req.params.id;
+
+  usersService
+    .deleteById(id)
+    .then((user) => res.status(201).json(user))
+    .catch((err) =>
+      res
+        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .json({ message: err.message }),
+    );
+};
 
 const usersController = {
   create,
-  //   readById,
+  readById,
   readAll,
-  //   updateById,
-  //   deleteById,
+  updateById,
+  deleteById,
 };
 
 export default usersController;

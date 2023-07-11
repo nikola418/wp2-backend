@@ -35,7 +35,9 @@ const UsersSchema: Schema = new Schema<IUser>(
     address: { type: String, maxLength: 200 },
     paymentMethod: { type: String, enum: PaymentMethod },
   },
-  { timestamps: true },
+  {
+    timestamps: true,
+  },
 );
 
 export const modelName = 'User';

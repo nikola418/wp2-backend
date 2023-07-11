@@ -9,13 +9,13 @@ usersRouter.post(
   validateSchema(Schemas.user.create),
   usersController.create,
 );
-// usersRouter.get('/:id', controller.readById);
+usersRouter.get('/:id', usersController.readById);
 usersRouter.get('/', usersController.readAll);
-// usersRouter.patch(
-//   '/:id',
-//   validateSchema(Schemas.user.update),
-//   controller.updateById,
-// );
-// usersRouter.delete('/:id', controller.deleteById);
+usersRouter.patch(
+  '/:id',
+  validateSchema(Schemas.user.update),
+  usersController.updateById,
+);
+usersRouter.delete('/:id', usersController.deleteById);
 
 export default usersRouter;
