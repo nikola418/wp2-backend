@@ -6,7 +6,6 @@ const selectQuery = {
 };
 
 const create = async (dto: IUser) => {
-  // #swagger.tags = ['Users']
   const {
     email,
     password,
@@ -38,7 +37,7 @@ const readById = async (_id: string) => {
   return await User.findById(_id).select(selectQuery);
 };
 
-const updateById = (_id: string, dto: IUser) => {
+const updateById = (_id: string, dto: Partial<IUser>) => {
   return User.findByIdAndUpdate(_id, dto, { new: true }).select(selectQuery);
 };
 

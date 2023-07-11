@@ -1,31 +1,32 @@
 import Pizza, { IPizza } from '../models/pizzas';
 
 const create = (dto: IPizza) => {
-  // #swagger.tags = ['Pizzas']
   const { desc, extraOptions, sizes, title, img } = dto;
   const pizza = new Pizza({ desc, extraOptions, sizes, title, img });
   return pizza.save();
 };
 
 const readAll = () => {
-  // #swagger.tags = ['Pizzas']
   return Pizza.find({});
 };
-const readById = () => {
-  return;
+const readById = (_id: string) => {
+  return Pizza.findById(_id);
 };
 
-const updateById = () => {
-  return;
+const updateById = (_id: string, dto: Partial<IPizza>) => {
+  return Pizza.findByIdAndUpdate(_id, dto, { new: true });
 };
 
-const deleteById = () => {
-  return;
+const deleteById = (_id: string) => {
+  return Pizza.findByIdAndDelete(_id);
 };
 
 const pizzasService = {
   create,
   readAll,
+  readById,
+  updateById,
+  deleteById,
 };
 
 export default pizzasService;

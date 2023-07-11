@@ -24,7 +24,7 @@ const PizzasSchema = new Schema(
     },
     desc: {
       type: String,
-      required: true,
+      required: false,
       maxLength: 200,
     },
     img: {
@@ -42,11 +42,16 @@ const PizzasSchema = new Schema(
             type: Number,
             required: true,
           },
+          _id: false,
         },
       ],
       validate: [validateSizes, 'Must have at least 1 size'],
+      required: true,
     },
-    extraOptions: [ExtrasSchema],
+    extraOptions: {
+      type: [ExtrasSchema],
+      required: false,
+    },
   },
   { timestamps: true },
 );

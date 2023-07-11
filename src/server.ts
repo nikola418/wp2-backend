@@ -10,6 +10,7 @@ import pizzasRouter from './routes/pizzas';
 import swaggerUI from 'swagger-ui-express';
 import swaggerFile from './docs/swagger-docs.json';
 import { HttpStatus } from './library/enums';
+import extrasRouter from './routes/extras';
 
 const router: Express = express();
 /**  Connect to Mongo */
@@ -71,6 +72,7 @@ const StartServer = () => {
   router.use('/books', booksRouter);
   router.use('/users', usersRouter);
   router.use('/pizzas', pizzasRouter);
+  router.use('/extras', extrasRouter);
   router.use('/api', swaggerUI.serve, swaggerUI.setup(swaggerFile, {}));
 
   /** HealthCheck */

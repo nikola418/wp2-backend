@@ -9,7 +9,9 @@ pizzasRouter.post(
   validateSchema(Schemas.pizza.create),
   pizzasController.create,
 );
-
 pizzasRouter.get('/', pizzasController.readAll);
+pizzasRouter.get('/:id', pizzasController.readById);
+pizzasRouter.patch('/:id', pizzasController.updateById);
+pizzasRouter.delete('/:id', pizzasController.deleteById);
 
 export default pizzasRouter;

@@ -6,6 +6,7 @@ import { IBook } from '../models/book';
 import { HttpStatus } from '../library/enums';
 import { createUserSchema, updateUserSchema } from './schemas/user';
 import { createPizzaSchema, updatePizzaSchema } from './schemas/pizza';
+import { createExtraSchema } from './schemas/extra';
 
 export const validateSchema = (schema: ObjectSchema) => {
   return (req: Request, res: Response, next: NextFunction) => {
@@ -52,4 +53,5 @@ export const Schemas = {
     create: createPizzaSchema,
     update: updatePizzaSchema,
   },
+  extra: { create: createExtraSchema },
 };
