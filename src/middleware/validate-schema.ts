@@ -1,12 +1,13 @@
 import Joi, { ObjectSchema } from 'joi';
 import { NextFunction, Request, Response } from 'express';
-import Logging from '../library/logging';
+import Logging from '../utils/logging/logging';
 import { IAuthor } from '../models/author';
 import { IBook } from '../models/book';
-import { HttpStatus } from '../library/enums';
+import { HttpStatus } from '../utils/enums';
 import { createUserSchema, updateUserSchema } from './schemas/user';
 import { createPizzaSchema, updatePizzaSchema } from './schemas/pizza';
 import { createExtraSchema } from './schemas/extra';
+import { userLoginSchema } from './schemas/auth';
 
 export const validateSchema = (schema: ObjectSchema) => {
   return (req: Request, res: Response, next: NextFunction) => {
@@ -54,4 +55,5 @@ export const Schemas = {
     update: updatePizzaSchema,
   },
   extra: { create: createExtraSchema },
+  auth: { login: userLoginSchema },
 };

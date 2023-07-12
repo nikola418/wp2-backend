@@ -1,35 +1,23 @@
 import express, { Express } from 'express';
 import http from 'http';
-import mongoose from 'mongoose';
 import { config } from './config/config';
-import Logging from './library/logging';
+import Logging from './utils/logging/logging';
 import usersRouter from './routes/users';
 import booksRouter from './routes/books';
 import authorsRouter from './routes/authors';
 import pizzasRouter from './routes/pizzas';
 import swaggerUI from 'swagger-ui-express';
 import swaggerFile from './docs/swagger-docs.json';
-import { HttpStatus } from './library/enums';
+import { HttpStatus } from './utils/enums';
 import extrasRouter from './routes/extras';
+import { connect } from './utils/db-connection/mongoose-connection';
+import authRouter from './routes/auth';
 
 const router: Express = express();
 /**  Connect to Mongo */
-mongoose
-  .connect(config.mongo.url, {
-    retryWrites: true,
-    w: 'majority',
-  })
-  .then(() => {
-    Logging.info(`Connected to Cluster0`);
-    StartServer();
-  })
-  .catch((err) => {
-    Logging.error('Unable to connect:');
-    Logging.error(err);
-  });
-
+connect().then(() => startServer());
 /** Only start the server if Mongo Connects */
-const StartServer = () => {
+const startServer = () => {
   router.use((req, res, next) => {
     /** Log the req */
     Logging.info(
@@ -73,6 +61,7 @@ const StartServer = () => {
   router.use('/users', usersRouter);
   router.use('/pizzas', pizzasRouter);
   router.use('/extras', extrasRouter);
+  router.use('/auth', authRouter);
   router.use('/api', swaggerUI.serve, swaggerUI.setup(swaggerFile, {}));
 
   /** HealthCheck */

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { HttpStatus } from '../library/enums';
+import { HttpStatus } from '../utils/enums';
 import extrasService from '../services/extra';
 
 const create = (req: Request, res: Response) => {

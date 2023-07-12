@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { HttpStatus } from '../library/enums';
+import { HttpStatus } from '../utils/enums';
 import pizzasService from '../services/pizza';
 import { IPizza } from '../models/pizzas';
 

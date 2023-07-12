@@ -20,6 +20,8 @@ const UsersSchema: Schema = new Schema<IUser>(
       required: true,
       maxLength: 512,
       unique: true,
+      index: true,
+      lowercase: true,
     },
     password: {
       type: String,

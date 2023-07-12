@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import usersService from '../services/users';
-import { HttpStatus } from '../library/enums';
-import Logging from '../library/logging';
+import { HttpStatus } from '../utils/enums';
+import Logging from '../utils/logging/logging';
 import { IUser, IUserModel } from '../models/users';
 
 const create = (req: Request, res: Response, next: NextFunction) => {
@@ -29,7 +29,6 @@ const create = (req: Request, res: Response, next: NextFunction) => {
     .then((user) => res.status(HttpStatus.CREATED).json(user))
     .catch((error) => {
       Logging.error(error);
-      console.log(Object.keys(error));
       if (error.code === 11000)
         return res.status(HttpStatus.BAD_REQUEST).json({ error });
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ error });

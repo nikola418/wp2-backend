@@ -1,5 +1,5 @@
 import User, { IUser } from '../models/users';
-import { hashPassword } from '../library/hash';
+import { hashPassword } from '../utils/bcrypt/hash';
 
 const selectQuery = {
   password: false,
