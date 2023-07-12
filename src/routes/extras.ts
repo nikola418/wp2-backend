@@ -1,6 +1,6 @@
 import express from 'express';
 import { Schemas, validateSchema } from '../middleware/validate-schema';
-import extrasController from '../controllers/extras';
+import { extrasController } from '../controllers/extras';
 
 const extrasRouter = express.Router();
 

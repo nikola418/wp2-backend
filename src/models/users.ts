@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Schema, Document, Model } from 'mongoose';
 import { PaymentMethod } from './enums';
 
 export interface IUser {
@@ -43,4 +43,9 @@ const UsersSchema: Schema = new Schema<IUser>(
 );
 
 export const modelName = 'User';
-export default mongoose.model<IUserModel>(modelName, UsersSchema);
+const User: Model<IUserModel> = mongoose.model<IUserModel>(
+  modelName,
+  UsersSchema,
+);
+
+export default User;
