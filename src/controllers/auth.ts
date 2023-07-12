@@ -1,10 +1,10 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { authService } from '../services/auth';
 import { config } from '../config/config';
 import { HttpStatus } from '../utils/enums';
 
 export const authController = {
-  login: (req: Request, res: Response) => {
+  login: (req: Request, res: Response, next: NextFunction) => {
     const { email, password } = req.body;
     try {
       const token = authService.login({ email, password });
@@ -18,7 +18,7 @@ export const authController = {
         .status(HttpStatus.OK)
         .json({ message: 'Login Successful!' });
     } catch (err) {
-      return;
+      next(err);
     }
   },
   logout: (req: Request, res: Response) => {

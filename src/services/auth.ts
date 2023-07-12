@@ -24,6 +24,7 @@ export const authService = {
       surname: user.surname,
       paymentMethod: user.paymentMethod,
       phoneNumber: user.phoneNumber,
+      role: user.role,
     };
 
     return generateAuthToken(payload);

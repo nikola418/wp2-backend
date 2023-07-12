@@ -1,18 +1,19 @@
 import mongoose, { Schema, Document } from 'mongoose';
-import { IPizzaModel, modelName as pizzasModelName } from './pizzas';
-import { IExtraModel, modelName as extrasModelName } from './extras';
-import { IUserModel } from './users';
+import { IPizza, IPizzaModel, modelName as pizzasModelName } from './pizzas';
+import { IExtra, IExtraModel, modelName as extrasModelName } from './extras';
 import { PaymentMethod, Status } from './enums';
+import { Enum } from './types';
+import { IUser } from './users';
 
 export interface IOrder {
-  customer: IUserModel;
+  customer: IUser;
   address: string;
   total: number;
-  status: keyof typeof Status;
-  paymentMethod: keyof typeof PaymentMethod;
+  status: Enum<Status>;
+  paymentMethod: Enum<PaymentMethod>;
   entries: {
-    pizza: IPizzaModel;
-    extras: IExtraModel[];
+    pizza: IPizza;
+    extras: IExtra[];
   }[];
 }
 
@@ -38,10 +39,22 @@ const OrderSchema = new Schema(
       type: String,
       enum: Status,
       default: 0,
+      get: (status: number) => {
+        return {
+          name: Status[status],
+          value: status,
+        };
+      },
     },
     paymentMethod: {
       type: String,
       enum: PaymentMethod,
+      get: (method: number) => {
+        return {
+          name: PaymentMethod[method],
+          value: method,
+        };
+      },
       required: true,
     },
     entries: [
@@ -59,7 +72,7 @@ const OrderSchema = new Schema(
       },
     ],
   },
-  { timestamps: true },
+  { timestamps: true, toJSON: { getters: true, virtuals: false } },
 );
 
 export const modelName = 'Order';

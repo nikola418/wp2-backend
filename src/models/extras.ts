@@ -21,7 +21,7 @@ export const ExtrasSchema = new Schema(
       min: 0,
     },
   },
-  { timestamps: true },
+  { timestamps: true, toJSON: { getters: true, virtuals: false } },
 );
 
 export const modelName = 'Extra';

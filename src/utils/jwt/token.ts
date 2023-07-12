@@ -14,6 +14,7 @@ export interface IJwtPayload
     | 'address'
     | '_id'
     | '__v'
+    | 'role'
   > {}
 
 export const generateAuthToken = (payload: IJwtPayload) => {
