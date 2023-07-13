@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import users, { IUser } from '../../models/users';
+import { IUser } from '../../models/users';
 
 const userSchema = Joi.object<IUser>({
   email: Joi.string().regex(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/),

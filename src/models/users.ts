@@ -1,6 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose';
 import { PaymentMethod, UserRole } from './enums';
-import { Enum } from './types';
 
 export interface IUser {
   email: string;
@@ -9,13 +8,13 @@ export interface IUser {
   surname?: string;
   phoneNumber?: string;
   address?: string;
-  paymentMethod?: Enum<PaymentMethod>;
-  role?: Enum<UserRole>;
+  paymentMethod?: number;
+  role?: number & { name: string; value: number };
 }
 
 export interface IUserModel extends IUser, Document {}
 
-const UsersSchema: Schema = new Schema<IUser>(
+const UsersSchema = new Schema<IUser>(
   {
     email: {
       type: String,
@@ -38,22 +37,21 @@ const UsersSchema: Schema = new Schema<IUser>(
     phoneNumber: { type: String, maxLength: 20 },
     address: { type: String, maxLength: 200 },
     paymentMethod: {
-      type: String,
-      enum: PaymentMethod,
-      get: (method: number) => {
+      type: Number,
+      get: (value: number) => {
         return {
-          name: PaymentMethod[method],
-          value: method,
+          name: PaymentMethod[value],
+          value,
         };
       },
     },
     role: {
-      type: Number,
+      type: Schema.Types.Number,
       default: UserRole.Customer,
-      get: (role: number) => {
+      get: (value: number) => {
         return {
-          name: UserRole[role],
-          value: role,
+          name: UserRole[value],
+          value,
         };
       },
     },

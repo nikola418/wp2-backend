@@ -9,8 +9,8 @@ export interface IOrder {
   customer: IUser;
   address: string;
   total: number;
-  status: Enum<Status>;
-  paymentMethod: Enum<PaymentMethod>;
+  status: number & { name: string; value: number };
+  paymentMethod: number;
   entries: {
     pizza: IPizza;
     extras: IExtra[];
@@ -36,8 +36,7 @@ const OrderSchema = new Schema(
       required: true,
     },
     status: {
-      type: String,
-      enum: Status,
+      type: Number,
       default: 0,
       get: (status: number) => {
         return {

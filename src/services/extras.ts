@@ -9,4 +9,8 @@ export const extrasService = {
   deleteById: (_id: string) => {
     return Extra.findByIdAndDelete(_id);
   },
+
+  readAll: () => {
+    return Extra.find();
+  },
 };

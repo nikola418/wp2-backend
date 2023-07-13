@@ -3,6 +3,7 @@ import Logging from '../utils/logging/logging';
 
 dotenv.config();
 
+const NODE_ENV = process.env.NODE_ENV || 'development';
 const MONGO_USERNAME = process.env.MONGO_USERNAME || '';
 const MONGO_PASSWORD = process.env.MONGO_PASSWORD || '';
 const MONGO_URL = `mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@cluster0.rfo8phh.mongodb.net`;
@@ -26,7 +27,8 @@ export const config = {
   server: {
     port: SERVER_PORT,
     apiSecret: API_SECRET,
-    origin: ORIGIN,
+    nodeEnv: NODE_ENV,
+    origin: NODE_ENV === 'development' ? '*' : ORIGIN,
     jwtExpirationTime: JWT_EXPIRATION_TIME,
     cookieName: COOKIE_NAME,
   },

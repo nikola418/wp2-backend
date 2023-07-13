@@ -39,7 +39,11 @@ export const usersService = {
   },
 
   updateById: (_id: string, dto: Partial<IUser>) => {
-    return User.findByIdAndUpdate(_id, dto, { new: true }).select(selectQuery);
+    return User.findByIdAndUpdate(
+      _id,
+      { ...dto, password: dto.password && hashPassword(dto.password) },
+      { new: true },
+    ).select(selectQuery);
   },
 
   deleteById: async (_id: string) => {

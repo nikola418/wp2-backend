@@ -9,7 +9,7 @@ export interface IPizza {
   desc: string;
   img?: string;
   sizes: {
-    dimension: Enum<PizzaDimension>;
+    dimension: number & { name: string; value: number };
     price: number;
   }[];
   extraOptions: IExtra[];
@@ -37,8 +37,7 @@ const PizzasSchema = new Schema(
       type: [
         {
           dimension: {
-            type: String,
-            enum: PizzaDimension,
+            type: Number,
             required: true,
             get: (dimension: number) => {
               return {

@@ -8,9 +8,9 @@ const pizzaSchema = Joi.object<IPizza>({
   img: Joi.string().uri(),
   sizes: Joi.array()
     .items({
-      dimension: Joi.string()
+      dimension: Joi.number()
         .required()
-        .valid(...Object.keys(PizzaDimension)),
+        .valid(...Object.values(PizzaDimension)),
       price: Joi.number().required().min(0),
     })
     .min(1),

@@ -51,7 +51,9 @@ export const usersController = {
 
     usersService
       .readById(id)
-      .then((user) => res.status(HttpStatus.OK).json(user))
+      .then((user) => {
+        res.status(HttpStatus.OK).json(user);
+      })
       .catch((err) =>
         res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
           message: err.message,
