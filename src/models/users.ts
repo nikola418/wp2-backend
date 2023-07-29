@@ -8,8 +8,8 @@ export interface IUser {
   surname?: string;
   phoneNumber?: string;
   address?: string;
-  paymentMethod?: (number & { name: string; value: number }) | undefined;
-  role: (number & { name: string; value: number }) | undefined;
+  paymentMethod?: number & { name: string; value: number };
+  role?: number & { name: string; value: number };
 }
 
 export interface IUserModel extends IUser, Document {}
@@ -59,7 +59,14 @@ const UsersSchema = new Schema<IUser>(
   },
   {
     timestamps: true,
-    toJSON: { getters: true, virtuals: true },
+    toJSON: {
+      getters: true,
+      virtuals: true,
+      transform: (doc, ret, options) => {
+        delete ret._id;
+        delete ret.__v;
+      },
+    },
   },
 );
 

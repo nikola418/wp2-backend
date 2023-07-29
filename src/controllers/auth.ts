@@ -3,6 +3,7 @@ import { authService } from '../services/auth';
 import { config } from '../config/config';
 import { HttpStatus } from '../utils/enums';
 import { usersService } from '../services/users';
+import { IJwtPayload } from '../utils/jwt';
 
 export const authController = {
   signUp: async (req: Request, res: Response, next: NextFunction) => {
@@ -36,10 +37,9 @@ export const authController = {
     // #swagger.tags = ['Auth']
     const { email, password } = req.body;
     try {
-      const token = await authService.login({ email, password });
+      const token = await authService.signIn({ email, password });
       res
         .cookie(config.server.cookieName, token, {
-          httpOnly: true,
           secure: false,
         })
         .status(HttpStatus.OK)
@@ -58,6 +58,18 @@ export const authController = {
         .json({ message: 'Logout Successful!' });
     } else {
       res.status(HttpStatus.UNAUTHORIZED).json({ error: 'Invalid Token!' });
+    }
+  },
+  me: async (req: Request, res: Response, next: NextFunction) => {
+    const authUser: IJwtPayload = req.user as IJwtPayload;
+    try {
+      const user = await usersService.readById(authUser.id);
+      if (req.cookies[config.server.cookieName]) {
+        return res.status(HttpStatus.OK).json(user);
+      }
+      res.sendStatus(HttpStatus.UNAUTHORIZED);
+    } catch (error) {
+      next(error);
     }
   },
 };

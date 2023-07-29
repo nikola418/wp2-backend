@@ -6,14 +6,13 @@ import jwt from 'jsonwebtoken';
 export interface IJwtPayload
   extends Pick<
     IUserModel,
+    | 'id'
     | 'email'
     | 'name'
     | 'surname'
     | 'paymentMethod'
     | 'phoneNumber'
     | 'address'
-    | '_id'
-    | '__v'
     | 'role'
   > {}
 

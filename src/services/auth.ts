@@ -4,7 +4,7 @@ import ILogin from '../utils/interfaces/login';
 import { IJwtPayload, generateAuthToken } from '../utils/jwt';
 
 export const authService = {
-  login: async (dto: ILogin) => {
+  signIn: async (dto: ILogin) => {
     const { email, password } = dto;
     const user = await User.findOne<IUserModel>({ email });
 
@@ -17,8 +17,7 @@ export const authService = {
 
     const payload: IJwtPayload = {
       email: user.email,
-      __v: user.__v,
-      _id: user._id.toString(),
+      id: user.id,
       address: user.address,
       name: user.name,
       surname: user.surname,
