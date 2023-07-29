@@ -3,34 +3,6 @@ import { usersService } from '../services/users';
 import { HttpStatus } from '../utils/enums';
 
 export const usersController = {
-  create: async (req: Request, res: Response, next: NextFunction) => {
-    // #swagger.tags = ['Users']
-    const {
-      email,
-      password,
-      address,
-      name,
-      paymentMethod,
-      phoneNumber,
-      surname,
-    } = req.body;
-
-    try {
-      const user = await usersService.create({
-        email,
-        password,
-        address,
-        name,
-        paymentMethod,
-        phoneNumber,
-        surname,
-      });
-      res.status(HttpStatus.CREATED).json(user);
-    } catch (error) {
-      next(error);
-    }
-  },
-
   readAll: (req: Request, res: Response) => {
     // #swagger.tags = ['Users']
 

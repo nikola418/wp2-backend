@@ -6,11 +6,11 @@ const userSchema = Joi.object<IUser>({
   password: Joi.string().regex(
     /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/,
   ),
-  address: Joi.string(),
-  name: Joi.string(),
-  surname: Joi.string(),
-  phoneNumber: Joi.string(),
-  paymentMethod: Joi.string(),
+  address: Joi.string().allow(''),
+  name: Joi.string().allow(''),
+  surname: Joi.string().allow(''),
+  phoneNumber: Joi.string().allow(''),
+  paymentMethod: Joi.string().allow(''),
 });
 
 export const createUserSchema = userSchema.fork(['email', 'password'], (x) =>
