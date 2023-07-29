@@ -18,17 +18,9 @@ const doc = {
   basePath: '/',
   consumes: 'application/json',
   produces: 'application/json',
-  tags: [
-    {
-      name: 'Pizzas',
-    },
-    {
-      name: 'Users',
-    },
-  ],
   schemes: ['http'],
 };
 
 const outputFile = './src/docs/swagger-docs.json';
-const endpoints = ['./src/server.ts'];
+const endpoints = ['./src/app.ts'];
 swaggerAutogen(options)(outputFile, endpoints, doc);

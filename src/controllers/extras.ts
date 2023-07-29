@@ -4,6 +4,7 @@ import { extrasService } from '../services/extras';
 
 export const extrasController = {
   create: (req: Request, res: Response, next: NextFunction) => {
+    // #swagger.tags = ['Extras']
     const { text, price } = req.body;
     extrasService
       .create({ text, price })
@@ -16,6 +17,7 @@ export const extrasController = {
   },
 
   deleteById: (req: Request, res: Response) => {
+    // #swagger.tags = ['Extras']
     const id = req.params.id;
 
     extrasService
@@ -29,6 +31,7 @@ export const extrasController = {
   },
 
   readAll: async (req: Request, res: Response, next: NextFunction) => {
+    // #swagger.tags = ['Extras']
     try {
       const extras = await extrasService.readAll();
       return res.status(HttpStatus.OK).json(extras);

@@ -1,4 +1,4 @@
-import User from '../models/users';
+import User, { IUserModel } from '../models/users';
 import { comparePasswords } from '../utils/bcrypt/hash';
 import ILogin from '../utils/interfaces/login';
 import { IJwtPayload, generateAuthToken } from '../utils/jwt';
@@ -6,7 +6,7 @@ import { IJwtPayload, generateAuthToken } from '../utils/jwt';
 export const authService = {
   login: async (dto: ILogin) => {
     const { email, password } = dto;
-    const user = await User.findOne({ email });
+    const user = await User.findOne<IUserModel>({ email });
 
     if (!user) {
       throw new Error('User not found!');

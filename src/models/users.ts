@@ -8,8 +8,8 @@ export interface IUser {
   surname?: string;
   phoneNumber?: string;
   address?: string;
-  paymentMethod?: number;
-  role?: number & { name: string; value: number };
+  paymentMethod?: (number & { name: string; value: number }) | undefined;
+  role: (number & { name: string; value: number }) | undefined;
 }
 
 export interface IUserModel extends IUser, Document {}
@@ -38,6 +38,7 @@ const UsersSchema = new Schema<IUser>(
     address: { type: String, maxLength: 200 },
     paymentMethod: {
       type: Number,
+      default: PaymentMethod.CashUponDelivery,
       get: (value: number) => {
         return {
           name: PaymentMethod[value],
@@ -46,7 +47,7 @@ const UsersSchema = new Schema<IUser>(
       },
     },
     role: {
-      type: Schema.Types.Number,
+      type: Number,
       default: UserRole.Customer,
       get: (value: number) => {
         return {
@@ -58,7 +59,7 @@ const UsersSchema = new Schema<IUser>(
   },
   {
     timestamps: true,
-    toJSON: { getters: true, virtuals: false },
+    toJSON: { getters: true, virtuals: true },
   },
 );
 

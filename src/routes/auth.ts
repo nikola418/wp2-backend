@@ -5,11 +5,15 @@ import { Schemas, validateSchema } from '../middleware/validate-schema';
 const authRouter = express.Router();
 
 authRouter.post(
-  '/login',
+  '/sign-in',
   validateSchema(Schemas.auth.login),
-  authController.login,
+  authController.signIn,
 );
-
-authRouter.get('/logout', authController.logout);
+authRouter.post(
+  '/sign-up',
+  validateSchema(Schemas.user.create),
+  authController.signUp,
+);
+authRouter.get('/sign-out', authController.signOut);
 
 export default authRouter;

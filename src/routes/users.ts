@@ -4,11 +4,6 @@ import { Schemas, validateSchema } from '../middleware/validate-schema';
 
 const usersRouter = express.Router();
 
-usersRouter.post(
-  '/',
-  validateSchema(Schemas.user.create),
-  usersController.create,
-);
 usersRouter.get('/:id', usersController.readById);
 usersRouter.get('/', usersController.readAll);
 usersRouter.patch(
