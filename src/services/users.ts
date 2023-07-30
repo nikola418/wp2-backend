@@ -19,7 +19,7 @@ export const usersService = {
 
     const user = new User({
       email,
-      password: hashPassword(password),
+      password,
       name,
       surname,
       address,

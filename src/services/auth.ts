@@ -1,5 +1,7 @@
 import User, { IUserModel } from '../models/users';
 import { comparePasswords } from '../utils/bcrypt/hash';
+import { HttpStatus } from '../utils/enums';
+import { Exception } from '../utils/error/server-exception';
 import ILogin from '../utils/interfaces/login';
 import { IJwtPayload, generateAuthToken } from '../utils/jwt';
 
@@ -13,7 +15,7 @@ export const authService = {
     }
 
     if (!comparePasswords(password, user.password))
-      throw new Error('Bad request!');
+      throw new Exception(HttpStatus.BAD_REQUEST);
 
     const payload: IJwtPayload = {
       email: user.email,

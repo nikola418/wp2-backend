@@ -8,6 +8,7 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "dev": "ts-node-dev --rs ./src/server.ts",
+    "seed": "ts-node-dev ./src/seeders/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "document": "ts-node ./src/docs/swagger.ts",
     "format": "prettier -w ./src",

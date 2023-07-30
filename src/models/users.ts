@@ -1,5 +1,6 @@
 import mongoose, { Schema, Document } from 'mongoose';
 import { PaymentMethod, UserRole } from './enums';
+import { hashPassword } from '../utils/bcrypt/hash';
 
 export interface IUser {
   email: string;
@@ -8,8 +9,8 @@ export interface IUser {
   surname?: string;
   phoneNumber?: string;
   address?: string;
-  paymentMethod?: number & { name: string; value: number };
-  role?: number & { name: string; value: number };
+  paymentMethod?: number | { name: string; value: number };
+  role?: number | { name: string; value: number };
 }
 
 export interface IUserModel extends IUser, Document {}
@@ -25,6 +26,9 @@ const UsersSchema = new Schema<IUser>(
       lowercase: true,
     },
     password: {
+      set: (value: string) => {
+        return hashPassword(value);
+      },
       type: String,
       required: true,
       maxLength: 512,

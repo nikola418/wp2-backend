@@ -14,6 +14,8 @@ const COOKIE_NAME = process.env.COOKIE_NAME || 'Auth';
 const SERVER_PORT = process.env.SERVER_PORT
   ? Number(process.env.SERVER_PORT)
   : 4000;
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
+const ADMIN_PASS = process.env.ADMIN_PASS;
 
 if (!API_SECRET) {
   Logging.error('API_SECRET is undefined');
@@ -31,5 +33,9 @@ export const config = {
     origin: ORIGIN,
     jwtExpirationTime: JWT_EXPIRATION_TIME,
     cookieName: COOKIE_NAME,
+  },
+  seed: {
+    adminEmail: ADMIN_EMAIL,
+    adminPass: ADMIN_PASS,
   },
 };
