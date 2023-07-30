@@ -41,6 +41,7 @@ export const authController = {
       res
         .cookie(config.server.cookieName, token, {
           secure: false,
+          httpOnly: true,
         })
         .status(HttpStatus.OK)
         .json({ message: 'Login Successful!' });
