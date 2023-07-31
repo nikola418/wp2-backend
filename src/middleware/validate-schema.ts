@@ -6,6 +6,7 @@ import { createUserSchema, updateUserSchema } from './schemas/user';
 import { createPizzaSchema, updatePizzaSchema } from './schemas/pizza';
 import { createExtraSchema } from './schemas/extra';
 import { userLoginSchema } from './schemas/auth';
+import { createOrderSchema } from './schemas/order';
 
 export const validateSchema = (schema: ObjectSchema) => {
   return (req: Request, res: Response, next: NextFunction) => {
@@ -48,6 +49,7 @@ export const Schemas = {
     create: createPizzaSchema,
     update: updatePizzaSchema,
   },
+  order: { create: createOrderSchema },
   extra: { create: createExtraSchema },
   auth: { login: userLoginSchema },
 };

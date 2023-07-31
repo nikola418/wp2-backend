@@ -7,6 +7,7 @@ import usersRouter from './routes/users';
 import pizzasRouter from './routes/pizzas';
 import extrasRouter from './routes/extras';
 import authRouter from './routes/auth';
+import ordersRouter from './routes/orders';
 import { errorsMiddleware } from './middleware/error';
 import cors from 'cors';
 import { config } from './config/config';
@@ -79,6 +80,7 @@ export const createApp = () => {
   /** Routes */
   app.use('/users', usersRouter);
   app.use('/pizzas', pizzasRouter);
+  app.use('/orders', ordersRouter);
   app.use('/extras', extrasRouter);
   app.use('/auth', authRouter);
   app.use('/api', swaggerUI.serve, swaggerUI.setup(swaggerFile, {}));

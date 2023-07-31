@@ -1,19 +1,18 @@
 import mongoose, { Schema, Document } from 'mongoose';
 import { IPizza, IPizzaModel, modelName as pizzasModelName } from './pizzas';
 import { IExtra, IExtraModel, modelName as extrasModelName } from './extras';
-import { PaymentMethod, Status } from './enums';
-import { Enum } from './types';
+import { PaymentMethod, OrderStatus } from './enums';
 import { IUser } from './users';
 
 export interface IOrder {
-  customer: IUser;
+  customer: IUser | string;
   address: string;
   total: number;
   status: number & { name: string; value: number };
   paymentMethod: number;
   entries: {
-    pizza: IPizza;
-    extras: IExtra[];
+    pizza: IPizza | string;
+    extras: IExtra[] | string[];
   }[];
 }
 
@@ -40,7 +39,7 @@ const OrderSchema = new Schema(
       default: 0,
       get: (status: number) => {
         return {
-          name: Status[status],
+          name: OrderStatus[status],
           value: status,
         };
       },
