@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { HttpStatus } from '../utils/enums';
 import { pizzasService } from '../services/pizzas';
 
@@ -41,6 +41,20 @@ export const pizzasController = {
           .status(HttpStatus.INTERNAL_SERVER_ERROR)
           .json({ message: err.message }),
       );
+  },
+  readPizzasOfTheDay: async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) => {
+    // #swagger.tags = ['Pizzas']
+
+    try {
+      const pizzas = await pizzasService.readPizzasOfTheDay();
+      res.status(HttpStatus.OK).json(pizzas);
+    } catch (error) {
+      next(error);
+    }
   },
 
   updateById: (req: Request, res: Response) => {

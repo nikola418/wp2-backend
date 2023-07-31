@@ -1,4 +1,5 @@
 import Pizza, { IPizza } from '../models/pizzas';
+import Order from '../models/orders';
 
 export const pizzasService = {
   create: (dto: IPizza) => {
@@ -12,6 +13,19 @@ export const pizzasService = {
   },
   readById: (_id: string) => {
     return Pizza.findById(_id);
+  },
+  readPizzasOfTheDay: () => {
+    return Order.aggregate([
+      { $unwind: '$entries' },
+      {
+        $lookup: {
+          localField: 'pizza',
+          foreignField: '_id',
+          from: 'pizza',
+          as: 'pizza',
+        },
+      },
+    ]).limit(8);
   },
 
   updateById: (_id: string, dto: Partial<IPizza>) => {

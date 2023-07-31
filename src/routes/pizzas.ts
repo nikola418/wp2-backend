@@ -15,6 +15,7 @@ pizzasRouter.post(
   pizzasController.create,
 );
 pizzasRouter.get('/', pizzasController.readAll);
+pizzasRouter.get('/of-the-day', pizzasController.readPizzasOfTheDay);
 pizzasRouter.get('/:id', pizzasController.readById);
 pizzasRouter.patch('/:id', pizzasController.updateById);
 pizzasRouter.delete('/:id', pizzasController.deleteById);
