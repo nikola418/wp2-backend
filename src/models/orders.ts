@@ -45,15 +45,14 @@ const OrderSchema = new Schema(
       },
     },
     paymentMethod: {
-      type: String,
-      enum: PaymentMethod,
+      type: Number,
+      default: 0,
       get: (method: number) => {
         return {
           name: PaymentMethod[method],
           value: method,
         };
       },
-      required: true,
     },
     entries: [
       {
@@ -74,8 +73,7 @@ const OrderSchema = new Schema(
 );
 
 export const modelName = 'Order';
-export default mongoose.models[modelName] ||
-  mongoose.model('Order', OrderSchema);
+export default mongoose.model<IOrderModel>(modelName, OrderSchema);
 
 function validateEntries(
   entries: {
