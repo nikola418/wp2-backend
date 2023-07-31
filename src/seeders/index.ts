@@ -12,7 +12,7 @@ const seed = async () => {
     const adminEmail = config.seed.adminEmail;
     const adminPass = config.seed.adminPass;
     if (adminEmail && adminPass) {
-      const user = new User<IUser>({
+      const user = new User({
         email: adminEmail,
         password: hashPassword(adminPass),
         role: UserRole.Admin,

@@ -3,6 +3,7 @@ import { IPizza, IPizzaModel, modelName as pizzasModelName } from './pizzas';
 import { IExtra, IExtraModel, modelName as extrasModelName } from './extras';
 import { PaymentMethod, OrderStatus } from './enums';
 import { IUser } from './users';
+import mongooseAutopopulate from 'mongoose-autopopulate';
 
 export interface IOrder {
   customer: IUser | string;
@@ -69,8 +70,18 @@ const OrderSchema = new Schema(
       },
     ],
   },
-  { timestamps: true, toJSON: { getters: true, virtuals: false } },
-);
+  {
+    timestamps: true,
+    toJSON: {
+      getters: true,
+      virtuals: true,
+      transform: (doc, ret, options) => {
+        delete ret._id;
+        delete ret.__v;
+      },
+    },
+  },
+).plugin(mongooseAutopopulate);
 
 export const modelName = 'Order';
 export default mongoose.model<IOrderModel>(modelName, OrderSchema);

@@ -65,7 +65,17 @@ const PizzasSchema = new Schema(
       },
     ],
   },
-  { timestamps: true, toJSON: { getters: true, virtuals: false } },
+  {
+    timestamps: true,
+    toJSON: {
+      getters: true,
+      virtuals: true,
+      transform: (doc, ret, options) => {
+        delete ret._id;
+        delete ret.__v;
+      },
+    },
+  },
 ).plugin(mongooseAutopopulate);
 
 export const modelName = 'Pizza';

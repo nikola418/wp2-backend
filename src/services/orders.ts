@@ -1,6 +1,6 @@
 import { TOrder } from '../middleware/schemas/order';
 import { UserRole } from '../models/enums';
-import Order, { IOrder, IOrderModel } from '../models/orders';
+import Order, { IOrderModel } from '../models/orders';
 import { IFilterParams } from '../models/types/filter-params';
 import { HttpStatus } from '../utils/enums';
 import { Exception } from '../utils/error/server-exception';
@@ -9,7 +9,13 @@ import { IJwtPayload } from '../utils/jwt';
 export const ordersService = {
   create: (user: IJwtPayload, dto: TOrder) => {
     const { address, entries, paymentMethod, total } = dto;
-    const order = new Order({ address, entries, paymentMethod, total });
+    const order = new Order({
+      customer: user.id,
+      address,
+      entries,
+      paymentMethod,
+      total,
+    });
     return order.save();
   },
 
@@ -19,7 +25,7 @@ export const ordersService = {
   ) => {
     const orders: IOrderModel[] = [];
 
-    if (user.role === UserRole.Admin) {
+    if (user.role?.value === UserRole.Admin) {
       orders.push(
         ...(await Order.find({})
           .sort({ createdAt: sortOrder })
@@ -28,7 +34,7 @@ export const ordersService = {
       );
     }
 
-    if (user.role === UserRole.Customer) {
+    if (user.role?.value === UserRole.Customer) {
       orders.push(
         ...(await Order.find({ customer: user.id })
           .sort({ createdAt: sortOrder })

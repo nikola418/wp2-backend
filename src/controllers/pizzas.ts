@@ -21,7 +21,7 @@ export const pizzasController = {
     // #swagger.tags = ['Pizzas']
     pizzasService
       .readAll()
-      .then((pizzas) => res.status(HttpStatus.OK).json({ pizzas }))
+      .then((pizzas) => res.status(HttpStatus.OK).json(pizzas))
       .catch((err) =>
         res
           .status(HttpStatus.INTERNAL_SERVER_ERROR)

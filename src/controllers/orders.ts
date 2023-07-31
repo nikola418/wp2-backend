@@ -4,13 +4,12 @@ import { TOrder } from '../middleware/schemas/order';
 import { HttpStatus } from '../utils/enums';
 import { IJwtPayload } from '../utils/jwt';
 import { SortOrder } from 'mongoose';
-import { IOrder, IOrderModel } from '../models/orders';
 
 export const ordersController = {
   create: async (req: Request, res: Response, next: NextFunction) => {
     //swagger.tags = ['Orders']
     const { address, entries, paymentMethod, total }: TOrder = req.body;
-
+    console.log(req.user);
     try {
       const order = await ordersService.create(req.user as IJwtPayload, {
         address,
@@ -33,7 +32,7 @@ export const ordersController = {
     const user = req.user as IJwtPayload;
 
     try {
-      const orders = ordersService.readAll(
+      const orders = await ordersService.readAll(
         { skip: skip as number, take: take as number, sortOrder },
         user,
       );

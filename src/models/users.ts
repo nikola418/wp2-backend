@@ -9,8 +9,8 @@ export interface IUser {
   surname?: string;
   phoneNumber?: string;
   address?: string;
-  paymentMethod?: number | { name: string; value: number };
-  role?: number | { name: string; value: number };
+  paymentMethod?: number & { name: string; value: number };
+  role?: number & { name: string; value: number };
 }
 
 export interface IUserModel extends IUser, Document {}
