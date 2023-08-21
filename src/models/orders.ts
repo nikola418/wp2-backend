@@ -1,7 +1,7 @@
 import mongoose, { Schema, Document } from 'mongoose';
 import { IPizza, IPizzaModel, modelName as pizzasModelName } from './pizzas';
 import { IExtra, IExtraModel, modelName as extrasModelName } from './extras';
-import { PaymentMethod, OrderStatus } from './enums';
+import { PaymentMethod, OrderStatus, PizzaDimension } from './enums';
 import { IUser } from './users';
 import mongooseAutopopulate from 'mongoose-autopopulate';
 
@@ -13,6 +13,8 @@ export interface IOrder {
   paymentMethod: number;
   entries: {
     pizza: IPizza | string;
+    dimension: number & { name: string; value: number };
+    count: number;
     extras: IExtra[] | string[];
   }[];
 }
@@ -64,6 +66,20 @@ const OrderSchema = new Schema(
             autopopulate: true,
             required: true,
           },
+          dimension: {
+            type: Number,
+            required: true,
+            get: (dimension: number) => {
+              return {
+                name: PizzaDimension[dimension],
+                value: dimension,
+              };
+            },
+            set: ({ name, value }: { name: string; value: number }) => {
+              return value;
+            },
+          },
+          count: { type: Number, required: true },
           extras: [{ type: Schema.Types.ObjectId, ref: extrasModelName }],
         },
         validate: [validateEntries, 'Must order at least 1 pizza!'],

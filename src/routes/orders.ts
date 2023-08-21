@@ -16,4 +16,9 @@ ordersRouter.get(
   passport.authenticate('jwt', { session: false }),
   ordersController.readAll,
 );
+ordersRouter.patch(
+  '/:id',
+  passport.authenticate('jwt', { session: false }),
+  ordersController.updateById,
+);
 export default ordersRouter;

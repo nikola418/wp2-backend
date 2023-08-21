@@ -2,7 +2,6 @@ import mongoose, { Schema, Document } from 'mongoose';
 import { IExtra, modelName as extrasModelName } from './extras';
 import { PizzaDimension } from './enums/';
 import mongooseAutopopulate from 'mongoose-autopopulate';
-import { Enum } from './types';
 
 export interface IPizza {
   title: string;
@@ -12,7 +11,7 @@ export interface IPizza {
     dimension: number & { name: string; value: number };
     price: number;
   }[];
-  extraOptions: IExtra[];
+  extras: IExtra[];
 }
 
 export interface IPizzaModel extends IPizza, Document {}
@@ -45,6 +44,9 @@ const PizzasSchema = new Schema(
                 value: dimension,
               };
             },
+            set: ({ name, value }: { name: string; value: number }) => {
+              return value;
+            },
           },
           price: {
             type: Number,
@@ -56,7 +58,7 @@ const PizzasSchema = new Schema(
       validate: [validateSizes, 'Must have at least 1 size'],
       required: true,
     },
-    extraOptions: [
+    extras: [
       {
         type: Schema.Types.ObjectId,
         ref: extrasModelName,

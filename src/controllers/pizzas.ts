@@ -5,10 +5,10 @@ import { pizzasService } from '../services/pizzas';
 export const pizzasController = {
   create: (req: Request, res: Response) => {
     // #swagger.tags = ['Pizzas']
-    const { desc, extraOptions, sizes, title, img } = req.body;
+    const { desc, extras, sizes, title, img } = req.body;
 
     pizzasService
-      .create({ desc, extraOptions, sizes, title, img })
+      .create({ desc, extras, sizes, title, img })
       .then((pizza) => res.status(HttpStatus.CREATED).json({ pizza }))
       .catch((err) =>
         res
@@ -60,10 +60,10 @@ export const pizzasController = {
   updateById: (req: Request, res: Response) => {
     // #swagger.tags = ['Pizzas']
     const id = req.params.id;
-    const { desc, extraOptions, sizes, title, img } = req.body;
+    const { desc, extras, sizes, title, img } = req.body;
 
     pizzasService
-      .updateById(id, { desc, extraOptions, sizes, title, img })
+      .updateById(id, { desc, extras, sizes, title, img })
       .then((pizza) => res.status(HttpStatus.OK).json(pizza))
       .catch((err) =>
         res

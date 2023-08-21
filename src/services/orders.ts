@@ -51,7 +51,8 @@ export const ordersService = {
     id: string,
     user: IJwtPayload,
   ) => {
-    if (!(user.role === UserRole.Admin))
+    console.log(user);
+    if (!(user.role!.value === UserRole.Admin))
       throw new Exception(HttpStatus.UNAUTHORIZED);
 
     const order = await Order.findByIdAndUpdate(id, { ...dto });

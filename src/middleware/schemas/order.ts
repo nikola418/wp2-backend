@@ -11,7 +11,12 @@ const orderSchema = Joi.object<TOrder>({
   entries: Joi.array()
     .items({
       pizza: Joi.string().required(),
-      extras: Joi.array().items(Joi.string().required()),
+      dimension: Joi.object({
+        name: Joi.string().required(),
+        value: Joi.number().required(),
+      }),
+      count: Joi.number(),
+      extras: Joi.array().items(Joi.string()).required(),
     })
     .min(1),
 });

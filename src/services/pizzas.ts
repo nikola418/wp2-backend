@@ -1,10 +1,26 @@
 import Pizza, { IPizza } from '../models/pizzas';
 import Order from '../models/orders';
+import Extra from '../models/extras';
 
 export const pizzasService = {
-  create: (dto: IPizza) => {
-    const { desc, extraOptions, sizes, title, img } = dto;
-    const pizza = new Pizza({ desc, extraOptions, sizes, title, img });
+  create: async (dto: IPizza) => {
+    const { desc, extras, sizes, title, img } = dto;
+
+    await Extra.create([...extras]).catch((err) => {
+      return;
+    });
+
+    const resExtras = await Extra.find({
+      $or: extras.map((extra) => ({ text: extra.text })),
+    });
+
+    const pizza = new Pizza({
+      desc,
+      extras: resExtras.map((extra) => extra._id),
+      sizes,
+      title,
+      img,
+    });
     return pizza.save();
   },
 
@@ -15,17 +31,7 @@ export const pizzasService = {
     return Pizza.findById(_id);
   },
   readPizzasOfTheDay: () => {
-    return Order.aggregate([
-      { $unwind: '$entries' },
-      {
-        $lookup: {
-          localField: 'pizza',
-          foreignField: '_id',
-          from: 'pizza',
-          as: 'pizza',
-        },
-      },
-    ]).limit(8);
+    return Pizza.find().limit(8);
   },
 
   updateById: (_id: string, dto: Partial<IPizza>) => {
