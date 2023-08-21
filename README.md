@@ -1,1 +1,2 @@
-    Express REST-API for Web Programming 2 final project
+    Express REST-API for a Pizza Delivery Web Application
+
